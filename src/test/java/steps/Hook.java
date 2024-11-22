@@ -41,9 +41,18 @@ public class Hook extends BaseUtil {
         try {
             // Wait for the UserName field to be visible and interactable
             WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("*[name='UserName']")));
-            
+
+            // Get the username dynamically from Jenkins or default to a static value
+            String username = System.getenv("BUILD_USER");  // This pulls the Jenkins build user
+
+            // Fallback for local testing if the environment variable is not set
+            if (username == null || username.isEmpty()) {
+                username = "defaultTestUser";  // Replace with the default or hardcoded test username
+            }
+
             // Interact with the element after it's visible
-            usernameField.sendKeys("your_username"); // Replace with the actual username
+            usernameField.sendKeys(username);  // Use the dynamically retrieved username
+
         } catch (Exception e) {
             System.out.println("Error finding UserName field: " + e.getMessage());
         }
