@@ -35,6 +35,11 @@ public class Hook extends BaseUtil {
         
         base.Driver = new ChromeDriver(chromeOptions);
 
+        ChromeDriverService service = new ChromeDriverService.Builder()
+    .withLogOutput(System.out)
+    .build();
+WebDriver driver = new ChromeDriver(service);
+
         // Implement WebDriverWait to ensure the UserName field is visible before interaction
         WebDriverWait wait = new WebDriverWait(base.Driver, Duration.ofSeconds(10));
 
