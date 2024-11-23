@@ -14,6 +14,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
@@ -34,12 +35,15 @@ public class Hook extends BaseUtil {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
         
-        base.Driver = new ChromeDriver(chromeOptions);
-
+        // Setup the ChromeDriverService with logging
         ChromeDriverService service = new ChromeDriverService.Builder()
-    .withLogOutput(System.out)
-    .build();
-WebDriver driver = new ChromeDriver(service);
+            .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))
+            .usingAnyFreePort()  // Automatically use an available port
+            .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
+            .build();
+
+        // Start the service and pass it to the ChromeDriver
+        base.Driver = new ChromeDriver(service, chromeOptions);
 
         // Implement WebDriverWait to ensure the UserName field is visible before interaction
         WebDriverWait wait = new WebDriverWait(base.Driver, Duration.ofSeconds(10));
