@@ -96,6 +96,16 @@
             <version>6.9.1</version>
             <scope>test</scope>
         </dependency>
+	    <dependencies>
+    <!-- Selenium WebDriver Dependency -->
+    <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.9.0</version> <!-- Use the latest version of Selenium -->
+    </dependency>
+
+    <!-- Other dependencies as required -->
+</dependencies>
 
         <!-- https://mvnrepository.com/artifact/org.picocontainer/picocontainer -->
         <dependency>
