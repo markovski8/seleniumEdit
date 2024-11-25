@@ -25,6 +25,12 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.64</version>
         </dependency>
+             <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.24</version> <!-- Update to latest version -->
+    <scope>provided</scope>
+         </dependency>
 
         <!-- Cucumber Dependency (Adjust the version if needed) -->
         <dependency>
@@ -71,16 +77,21 @@
         </dependency>
     </dependencies>
 
-    <build>
+   <build>
         <plugins>
             <!-- Compiler plugin for Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version> <!-- Updated to latest version for better JDK 17 support -->
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <fork>true</fork>
+                    <compilerArgs>
+                        <!-- Allow Lombok to access internal Java classes in JDK 17 -->
+                        <arg>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
