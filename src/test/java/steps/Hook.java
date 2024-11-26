@@ -1,10 +1,8 @@
-package steps;
-
 import Base.BaseUtil;
 import io.cucumber.java.*;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter; // Updated import
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -107,9 +105,9 @@ public class Hook extends BaseUtil {
     // Initialize ExtentReports
     private void startExtentReports() {
         if (base.extentReports == null) {
-            ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("target/extent-report.html");
+            ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-report.html"); // Using SparkReporter
             base.extentReports = new ExtentReports();
-            base.extentReports.attachReporter(htmlReporter);
+            base.extentReports.attachReporter(sparkReporter);
         }
     }
 
