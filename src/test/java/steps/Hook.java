@@ -2,6 +2,9 @@ package steps;
 
 import Base.BaseUtil;
 import io.cucumber.java.*;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,11 +25,7 @@ import java.time.Duration;
 public class Hook extends BaseUtil {
 
     private BaseUtil base;
-
-    // Public no-argument constructor for Cucumber to instantiate the class
-    public Hook() {
-        // No-op constructor
-    }
+    private ExtentTest features;
 
     public Hook(BaseUtil base) {
         this.base = base;
@@ -34,19 +33,21 @@ public class Hook extends BaseUtil {
 
     @Before
     public void InitializeTest(Scenario scenario) {
-        base.scenarioDef = base.features.createNode(scenario.getName());
+        // Initialize ExtentReports and create a test node for the scenario
+        startExtentReports();
+        base.scenarioDef = base.features.createNode(scenario.getName()); // Create a node for each scenario in ExtentReports
 
-        // Set up WebDriverManager to automatically handle ChromeDriver
+        // WebDriver setup
         WebDriverManager.chromedriver().setup();
-
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
-        // Setup the ChromeDriverService with logging (without manually setting the binary path)
+        // Setup the ChromeDriverService with logging
         ChromeDriverService service = new ChromeDriverService.Builder()
-            .usingAnyFreePort()  // Automatically use an available port
-            .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
-            .build();
+                .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))
+                .usingAnyFreePort()  // Automatically use an available port
+                .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
+                .build();
 
         // Start the service and pass it to the ChromeDriver
         base.Driver = new ChromeDriver(service, chromeOptions);
@@ -89,6 +90,8 @@ public class Hook extends BaseUtil {
         if (base.Driver != null) {
             base.Driver.quit();  // Gracefully quit the browser
         }
+        // End the test report
+        endExtentReports();
     }
 
     @BeforeStep
@@ -99,5 +102,26 @@ public class Hook extends BaseUtil {
     @AfterStep
     public void AfterEveryStep(Scenario scenario) {
         System.out.println("Finished step: " + scenario.getId());
+    }
+
+    // Initialize ExtentReports
+    private void startExtentReports() {
+        if (base.extentReports == null) {
+            ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("target/extent-report.html");
+            base.extentReports = new ExtentReports();
+            base.extentReports.attachReporter(htmlReporter);
+        }
+    }
+
+    // Initialize features for the report
+    private void startFeature(String featureName) {
+        features = base.extentReports.createTest(featureName); // Create the feature node for the report
+    }
+
+    // End the report after test completion
+    private void endExtentReports() {
+        if (base.extentReports != null) {
+            base.extentReports.flush();  // Ensure that the report is flushed to the file
+        }
     }
 }
