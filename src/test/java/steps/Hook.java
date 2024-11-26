@@ -1,4 +1,3 @@
-// Hook.java
 package steps;
 
 import Base.BaseUtil;
@@ -15,11 +14,14 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Hook extends BaseUtil {
 
     private BaseUtil base;
     private ExtentTest features;
+    private WebDriverWait wait;  // Make WebDriverWait reusable
 
     public Hook(BaseUtil base) {
         this.base = base;
@@ -45,8 +47,8 @@ public class Hook extends BaseUtil {
         // Start the service and pass it to ChromeDriver
         base.Driver = new ChromeDriver(service, chromeOptions);
 
-        // WebDriverWait to ensure UserName field is visible before interaction
-        WebDriverWait wait = new WebDriverWait(base.Driver, Duration.ofSeconds(10));
+        // Initialize WebDriverWait here to be reused
+        wait = new WebDriverWait(base.Driver, Duration.ofSeconds(10));
 
         try {
             WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("*[name='UserName']")));
