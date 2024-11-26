@@ -30,14 +30,15 @@ public class Hook extends BaseUtil {
     @Before
     public void InitializeTest(Scenario scenario) {
         base.scenarioDef = base.features.createNode(scenario.getName());
+
+        // Set up WebDriverManager to automatically handle ChromeDriver
         WebDriverManager.chromedriver().setup();
-        
+
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
-        
-        // Setup the ChromeDriverService with logging
+
+        // Setup the ChromeDriverService with logging (without manually setting the binary path)
         ChromeDriverService service = new ChromeDriverService.Builder()
-            .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))
             .usingAnyFreePort()  // Automatically use an available port
             .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
             .build();
