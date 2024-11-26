@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version> <!-- Update to latest version -->
+            <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
 
@@ -38,19 +38,12 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.14.0</version> <!-- Latest compatible version -->
+            <version>7.14.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
-            <version>7.14.0</version> <!-- Use the same version for all Cucumber libraries -->
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
             <version>7.14.0</version>
             <scope>test</scope>
         </dependency>
@@ -89,21 +82,6 @@
             <artifactId>selenium-java</artifactId>
             <version>4.0.0</version>
         </dependency>
-
-        <!-- JUnit Dependency -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <repositories>
@@ -125,7 +103,6 @@
                     <target>17</target>
                     <fork>true</fork>
                     <compilerArgs>
-                        <!-- Allow Lombok to access internal Java classes in JDK 17 -->
                         <arg>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
                     </compilerArgs>
                 </configuration>
