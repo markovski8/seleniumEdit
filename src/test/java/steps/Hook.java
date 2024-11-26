@@ -23,6 +23,11 @@ public class Hook extends BaseUtil {
 
     private BaseUtil base;
 
+    // Public no-argument constructor for Cucumber to instantiate the class
+    public Hook() {
+        // No-op constructor
+    }
+
     public Hook(BaseUtil base) {
         this.base = base;
     }
