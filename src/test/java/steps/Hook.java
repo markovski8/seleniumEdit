@@ -2,7 +2,7 @@ import Base.BaseUtil;
 import io.cucumber.java.*;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter; // Updated import
+import com.aventstack.extentreports.reporter.ExtentSparkReporter; // Using SparkReporter
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -118,4 +118,7 @@ public class Hook extends BaseUtil {
     // End the report after test completion
     private void endExtentReports() {
         if (base.extentReports != null) {
-            base.extentReports.flush();  // Ensure that the report i
+            base.extentReports.flush();  // Ensure that the report is flushed to the file
+        }
+    }
+} // <-- Closing brace for the class
