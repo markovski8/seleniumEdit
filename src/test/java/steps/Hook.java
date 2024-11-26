@@ -1,18 +1,16 @@
+// Hook.java
 package steps;
 
 import Base.BaseUtil;
 import io.cucumber.java.*;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;  // For ExtentReports 5.x
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
@@ -29,42 +27,39 @@ public class Hook extends BaseUtil {
 
     @Before
     public void InitializeTest(Scenario scenario) {
-        // Initialize ExtentReports and create a test node for the scenario
         startExtentReports();
-        base.scenarioDef = base.extentReports.createTest(scenario.getName()); // Create a node for each scenario in ExtentReports
+        base.extentReports.createTest(scenario.getName());  // Create a test in extentReports
 
         // WebDriver setup
-        WebDriverManager.chromedriver().setup();  // This line sets up the driver automatically
+        WebDriverManager.chromedriver().setup();  // Use WebDriverManager to set up the driver
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
         // Setup the ChromeDriverService with logging
         ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))  // Use the chromedriver binary from WebDriverManager
-                .usingAnyFreePort()  // Automatically use an available port
-                .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
+                .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))  // Using binary from WebDriverManager
+                .usingAnyFreePort()
+                .withLogFile(new File("target/chromedriver_logs.txt"))
                 .build();
 
-        // Start the service and pass it to the ChromeDriver
+        // Start the service and pass it to ChromeDriver
         base.Driver = new ChromeDriver(service, chromeOptions);
 
-        // Implement WebDriverWait to ensure the UserName field is visible before interaction
+        // WebDriverWait to ensure UserName field is visible before interaction
         WebDriverWait wait = new WebDriverWait(base.Driver, Duration.ofSeconds(10));
 
         try {
-            // Wait for the UserName field to be visible and interactable
             WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("*[name='UserName']")));
 
-            // Get the username dynamically from Jenkins or default to a static value
-            String username = System.getenv("BUILD_USER");  // This pulls the Jenkins build user
+            String username = System.getenv("BUILD_USER");  // Retrieve username dynamically from Jenkins
 
-            // Fallback for local testing if the environment variable is not set
+            // Fallback for local testing if BUILD_USER is not set
             if (username == null || username.isEmpty()) {
-                username = "defaultTestUser";  // Replace with the default or hardcoded test username
+                username = "defaultTestUser";  // Static test username for local environment
             }
 
-            // Interact with the element after it's visible
-            usernameField.sendKeys(username);  // Use the dynamically retrieved username
+            // Interact with the username field after it's visible
+            usernameField.sendKeys(username);
 
         } catch (Exception e) {
             System.out.println("Error finding UserName field: " + e.getMessage());
@@ -75,7 +70,7 @@ public class Hook extends BaseUtil {
     public void TearDownTest(Scenario scenario) {
         if (scenario.isFailed()) {
             try {
-                // Capture a screenshot if the scenario failed
+                // Capture screenshot for failed scenario
                 File screenshot = ((TakesScreenshot) base.Driver).getScreenshotAs(OutputType.FILE);
                 FileUtils.copyFile(screenshot, new File("target/screenshots/" + scenario.getName() + ".png"));
                 System.out.println("Screenshot saved for failed scenario: " + scenario.getName());
@@ -84,26 +79,25 @@ public class Hook extends BaseUtil {
             }
         }
         if (base.Driver != null) {
-            base.Driver.quit();  // Gracefully quit the browser
+            base.Driver.quit();  // Quit the WebDriver
         }
-        // End the test report
         endExtentReports();
     }
 
     // Initialize ExtentReports
     private void startExtentReports() {
         if (base.extentReports == null) {
-            // Initialize the Spark reporter for ExtentReports 5.x
+            // Setup ExtentReports with the Spark reporter
             ExtentSparkReporter sparkReporter = new ExtentSparkReporter("target/extent-report.html");
             base.extentReports = new ExtentReports();
-            base.extentReports.attachReporter(sparkReporter);
+            base.extentReports.attachReporter(sparkReporter);  // Attach the reporter to the report
         }
     }
 
-    // End the report after test completion
+    // End the ExtentReports
     private void endExtentReports() {
         if (base.extentReports != null) {
-            base.extentReports.flush();  // Ensure that the report is flushed to the file
+            base.extentReports.flush();  // Make sure to flush the report at the end
         }
     }
 }
