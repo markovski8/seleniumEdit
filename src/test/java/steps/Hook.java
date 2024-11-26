@@ -36,13 +36,12 @@ public class Hook extends BaseUtil {
         base.scenarioDef = base.features.createNode(scenario.getName()); // Create a node for each scenario in ExtentReports
 
         // WebDriver setup
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().setup();  // Updated to only call setup
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
         // Setup the ChromeDriverService with logging
         ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))
                 .usingAnyFreePort()  // Automatically use an available port
                 .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
                 .build();
@@ -119,7 +118,4 @@ public class Hook extends BaseUtil {
     // End the report after test completion
     private void endExtentReports() {
         if (base.extentReports != null) {
-            base.extentReports.flush();  // Ensure that the report is flushed to the file
-        }
-    }
-}
+            base.extentReports.flush();  // Ensure that the report i
