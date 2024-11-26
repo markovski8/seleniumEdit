@@ -38,13 +38,13 @@ public class Hook extends BaseUtil {
         base.scenarioDef = base.extentReports.createTest(scenario.getName()); // Create a node for each scenario in ExtentReports
 
         // WebDriver setup
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().setup();  // This line sets up the driver automatically
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
         // Setup the ChromeDriverService with logging
         ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))
+                .usingDriverExecutable(new File(WebDriverManager.chromedriver().getBinaryPath()))  // Use the chromedriver binary from WebDriverManager
                 .usingAnyFreePort()  // Automatically use an available port
                 .withLogFile(new File("target/chromedriver_logs.txt")) // Specify the log file for ChromeDriver
                 .build();
