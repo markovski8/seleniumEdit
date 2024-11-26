@@ -2,25 +2,21 @@ package steps;
 
 import Base.BaseUtil;
 import io.cucumber.java.*;
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;  // Updated for ExtentReports 5.x
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;  // For ExtentReports 5.x
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import org.apache.commons.io.FileUtils;
 
 public class Hook extends BaseUtil {
 
@@ -92,16 +88,6 @@ public class Hook extends BaseUtil {
         }
         // End the test report
         endExtentReports();
-    }
-
-    @BeforeStep
-    public void BeforeEveryStep(Scenario scenario) {
-        System.out.println("Starting step: " + scenario.getId());
-    }
-
-    @AfterStep
-    public void AfterEveryStep(Scenario scenario) {
-        System.out.println("Finished step: " + scenario.getId());
     }
 
     // Initialize ExtentReports
