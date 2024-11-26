@@ -25,11 +25,7 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.64</version>
         </dependency>
-             <dependency>
-    <groupId>io.github.bonigarcia</groupId>
-    <artifactId>webdrivermanager</artifactId>
-    <version>5.3.0</version>
-</dependency>
+  
 
         <!-- Lombok Dependency -->
         <dependency>
@@ -64,11 +60,21 @@
 </dependency>
 
         <!-- ExtentReports Dependency -->
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports</artifactId>
-            <version>5.1.0</version>
-        </dependency>
+       <dependencies>
+    <!-- ExtentReports 5.x -->
+    <dependency>
+        <groupId>com.aventstack</groupId>
+        <artifactId>extentreports</artifactId>
+        <version>5.1.0</version>
+    </dependency>
+
+    <!-- WebDriverManager -->
+    <dependency>
+        <groupId>io.github.bonigarcia</groupId>
+        <artifactId>webdrivermanager</artifactId>
+        <version>5.3.0</version>
+    </dependency>
+</dependencies>
 
         <!-- TestNG Dependency -->
         <dependency>
